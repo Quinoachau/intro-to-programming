@@ -11,3 +11,7 @@ In the root of the `~/class/intro-to-programming` directory:
 npx gitpick -o https://github.com/JeffryGonzalez/intro-to-programming-sep-2025 instructor
 ```
 
+## Here is some other stuff
+
+- blah blah blah
+
