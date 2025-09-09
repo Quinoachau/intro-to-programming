@@ -17,6 +17,10 @@ Authorization: bearer 39378973973973
 }
 ```
 
+```http
+GET http://localhost:1337/links/cc490c43-6ee0-4228-88e5-c6cf7843b8a1
+```
+
 Http Status Codes:
 
 200 - 299: This worked.
