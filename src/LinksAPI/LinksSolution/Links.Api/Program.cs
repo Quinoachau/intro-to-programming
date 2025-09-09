@@ -17,7 +17,9 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
-Console.WriteLine("Fixing to run the Api");
+
 app.Run(); //This is where the API will be up and running listening for requests,
            //but this is basically a while(true) {...} loop that runs forever
-Console.WriteLine("Done Running the API");
+
+// need to make this "Program" class visible to my tests
+public partial class Program;

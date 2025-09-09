@@ -1,4 +1,6 @@
 ﻿using System.Net.Http.Json;
+using System.Net;
+using Alba;
 
 namespace Links.Tests;
 public class AddingLinks
@@ -8,11 +10,20 @@ public class AddingLinks
     public async Task AddingALinkReturnsA200()
     {
         // this is low rent, we have a better way to do this, come back tomorrow.
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("http://localhost:1337");
+        //var client = new HttpClient();
+        //client.BaseAddress = new Uri("http://localhost:1337");
 
-        var response = await client.PostAsJsonAsync("/links", new { });
+        //var response = await client.PostAsJsonAsync("/links", new { });
 
-        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+        //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var host = await AlbaHost.For<Program>();
+
+        await host.Scenario(api =>
+        {
+            api.Post.Json(new { }).ToUrl("/links");
+            api.StatusCodeShouldBeOk();
+        });
+        
     }
 }
