@@ -5,6 +5,7 @@ namespace Banking.Tests.NewAccount;
 public class HaveCorrectBalance
 {
     [Fact]
+    [Trait("Category", "NewAccount")]
     public void CorrectBalanceForNewAccounts()
     {
         // Given i have a new bank account

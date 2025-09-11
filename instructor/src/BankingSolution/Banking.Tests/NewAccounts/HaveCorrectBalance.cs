@@ -1,6 +1,6 @@
 ﻿
 
-using Banking.Domain;
+using Banking.Tests.TestDoubles;
 
 namespace Banking.Tests.NewAccounts;
 [Trait("Category", "Unit")]
@@ -11,7 +11,8 @@ public class HaveCorrectBalance
     {
         // WTCYWYH - WRITE THE CODE YOU WISH YOU HAD.
         // Given I have a new bank account
-        var account = new BankAccount();
+        //var account = new BankAccount(new DummyBonusCalculator());
+        var account = new BankAccount(Substitute.For<ICalculateBonusesForBankAccount>());
         
         // When I ask that account for the balance
         decimal balance = account.GetBalance();
@@ -20,6 +21,8 @@ public class HaveCorrectBalance
 
         Assert.Equal(5000M, balance);
 
+      
 
     }
 }
+
