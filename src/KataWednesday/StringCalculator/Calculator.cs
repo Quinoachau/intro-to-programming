@@ -24,6 +24,5 @@ public class Calculator
             int sum = parsedNumbers.Sum();
 
             return sum;
-        }
     }
 }
