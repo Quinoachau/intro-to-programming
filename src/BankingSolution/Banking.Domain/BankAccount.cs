@@ -1,20 +1,30 @@
 ﻿
-using Banking.Domain.DomainExceptions;
+
+
 namespace Banking.Domain;
 
-public class BankAccount
+// An object owns some data and the transformations associated with that data.
+// Sound like a service? yep..
+public class BankAccount(ICalculateBonusesForBankAccount bonusCalculator)
 {
-    private decimal balance = 5000M;
-    public void Deposit(TransactionAmount amountToDeposit)
+    private decimal balance = 5000M; // Fields
+    public virtual void Deposit(TransactionAmount amountToDeposit)
     {
-        balance += amountToDeposit;
+     
+
+       decimal bonus = bonusCalculator.GetBonusForDepositOn( balance, amountToDeposit);
+        balance += amountToDeposit + bonus;
     }
-    public void Withdraw(decimal amountToWithdraw)
+
+    public decimal GetBalance()
     {
-        if (amountToWithdraw <= 0)
-        {
-            throw new InvalidTransactionAmountException();
-        }
+    
+        return balance; // "Slime" 
+    }
+
+    public void Withdraw(TransactionAmount amountToWithdraw)
+    {
+       
         if (amountToWithdraw <= balance)
         {
             balance -= amountToWithdraw;
@@ -22,10 +32,5 @@ public class BankAccount
         {
             throw new AccountOverdraftException();
         }
-    }
-
-    public decimal GetBalance()
-    {
-        return balance;
     }
 }

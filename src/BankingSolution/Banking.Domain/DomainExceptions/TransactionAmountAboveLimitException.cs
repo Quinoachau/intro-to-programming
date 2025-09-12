@@ -1,3 +1,5 @@
-﻿using Banking.Domain.DomainExceptions;
+﻿namespace Banking.Domain.DomainExceptions;
 
-public class TransactionAmountAboveLimitException : InvalidTransactionAmountException;
+
+
+public class TransactionAmountAboveLimitException: InvalidTransactionAmountException;

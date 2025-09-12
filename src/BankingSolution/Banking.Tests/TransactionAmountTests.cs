@@ -1,5 +1,4 @@
-﻿using Banking.Domain;
-using Banking.Domain.DomainExceptions;
+﻿
 
 namespace Banking.Tests;
 public class TransactionAmountTests
@@ -18,8 +17,9 @@ public class TransactionAmountTests
     [InlineData(-0.01)]
     public void InvalidTransactionAmounts(decimal amount)
     {
-        Assert.Throws<InvalidTransactionAmountException>(() => new TransactionAmount(amount));
+        Assert.Throws<Domain.DomainExceptions.InvalidTransactionAmountException>(() => new TransactionAmount(amount));
     }
+
     [Fact]
     public void TransactionsAboveLimitThrow()
     {

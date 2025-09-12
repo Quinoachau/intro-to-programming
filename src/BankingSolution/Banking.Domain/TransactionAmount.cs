@@ -1,5 +1,8 @@
-﻿namespace Banking.Domain;
-using Banking.Domain.DomainExceptions;
+﻿
+
+using BankAccountErrors = Banking.Domain.DomainExceptions;
+
+namespace Banking.Domain;
 public struct TransactionAmount
 {
     private decimal _amount;
@@ -8,13 +11,19 @@ public struct TransactionAmount
     {
         if (IsNotPositiveAmount(amount))
         {
-            throw new InvalidTransactionAmountException();
+            throw new BankAccountErrors.InvalidTransactionAmountException();
         }
-        if(IsAboveThreshold(amount))
+        if (IsAboveThreshold(amount))
         {
-            throw new TransactionAmountAboveLimitException();
+            throw new BankAccountErrors.TransactionAmountAboveLimitException();
         }
         _amount = amount;
+
+    }
+
+    private static bool IsAboveThreshold(decimal amount)
+    {
+        return amount > 10_000M; // must come into the bank to do this much
     }
 
     private static bool IsNotPositiveAmount(decimal amount)
@@ -22,10 +31,6 @@ public struct TransactionAmount
         return amount <= 0;
     }
 
-    private static bool IsAboveThreshold(decimal amount)
-    {
-        return amount > 10_000M;
-    }
     // this allows an "implict" converstion from TransactionAmount to a decimal.
     // so: decimal x = t; 
     public static implicit operator decimal(TransactionAmount tx)

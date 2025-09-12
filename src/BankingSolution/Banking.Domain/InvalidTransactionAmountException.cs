@@ -1,3 +1,4 @@
-﻿namespace Banking.Domain.DomainExceptions;
+﻿
 
+namespace Banking.Domain;
 public class InvalidTransactionAmountException : ArgumentOutOfRangeException;
