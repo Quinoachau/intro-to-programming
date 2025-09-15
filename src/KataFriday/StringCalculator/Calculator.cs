@@ -1,46 +1,63 @@
 ﻿
-using System.Runtime.ConstrainedExecution;
-using Castle.Core.Logging;
-using Xunit.Sdk;
+using StringCalculator.Helpers;
 
-public class Calculator(ILogger logger)
+public class Calculator(ILogger logger, IProvideFailureNotifications notificationApi)
 {
     public int Add(string numbers)
     {
-        if (numbers == "" || numbers.Length == 0)
+        // Fewest Elements - variables, loops, and if statements.
+        // Variables - names for things that VARY - that change.
+        // constant - an immutable - never changes.
+        var delimeters = new List<char> { ',', '\n' };
+        if (numbers.IsEmptyString()) { return 0; }
+
+
+
+        if (numbers.HasACustomDelimeter())
         {
-            return 0;
+            delimeters.Add(numbers[2]);
+            numbers = numbers[4..]; // reassigning to a variable.
         }
-        string delimiters = ",\n";
-
-
-        if (numbers.StartsWith("//"))
+        var results = numbers.Split(delimeters.ToArray()).Select(int.Parse);
+        if (results.Any(n => n < 0))
         {
-            int delimiterEndIndex = numbers.IndexOf('\n');
-            string customDelimiter = numbers.Substring(2, delimiterEndIndex - 2);
-            delimiters += customDelimiter;
-
-            numbers = numbers.Substring(delimiterEndIndex + 1);
+            throw new NegativeNumbersNotAllowedException(string.Join(", ", results.Where(n => n < 0)));
         }
+        var final = results
+        .Where(n => n <= 1000)
+        .Sum();
 
-        string[] numbersArray = numbers.Split(delimiters.ToCharArray());
-
-        var parsedNumbers = numbersArray.Select(int.Parse);
-
-        if (parsedNumbers.Any(num => num < 0))
+        // TODO: Write this to a logging service
+        try
         {
-            throw new InvalidNegativeNumberFound();
+            logger.LogCalculation(final.ToString());
+        }
+        catch (IndexOutOfRangeException)
+        {
+
+            notificationApi.NotifyOfLoggingFailure(final.ToString());
         }
 
-        int final = parsedNumbers.Sum();
-        logger.LogCalculation(final);
         return final;
     }
+
+
+
+
 }
 
-public class InvalidNegativeNumberFound : ArgumentOutOfRangeException;
+public class NegativeNumbersNotAllowedException : Exception
+{
+    public NegativeNumbersNotAllowedException(string message) : base(message) { }
+}
+
 
 public interface ILogger
 {
-    void LogCalculation(int final);
+    void LogCalculation(string message);
+}
+
+public interface IProvideFailureNotifications
+{
+    void NotifyOfLoggingFailure(string message);
 }
