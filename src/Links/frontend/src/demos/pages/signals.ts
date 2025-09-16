@@ -1,10 +1,11 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AtmWithdraw } from '../component/atm-withdraw';
 
 @Component({
   selector: 'app-demos-signals',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
-  template: ` <p>Signals Demo Here</p> `,
+  imports: [AtmWithdraw],
+  template: ` <app-demos-atm-withdraw /> `,
   styles: ``,
 })
 export class Signals {}
