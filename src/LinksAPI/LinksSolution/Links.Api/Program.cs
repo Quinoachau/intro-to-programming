@@ -6,6 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors(c =>
+{
+    c.AddDefaultPolicy(pol =>
+    {
+        pol.AllowAnyOrigin();
+        pol.AllowAnyMethod();
+        pol.AllowAnyHeader();
+    });
+});
+
 var connectionString = builder.Configuration.GetConnectionString("links")
     ?? throw new Exception("You Need a Connection String!");
 Console.WriteLine("Using This Connection String " + connectionString);
@@ -40,7 +50,7 @@ app.UseAuthorization();
 app.MapControllers(); // Create a "phone book" of possible things this API can expect.
 // For example, when someone does a POST to "/links", create the LinksController and call the AddLink method.
 // Route Table.
-
+app.UseCors();
 app.Run(); // This is where our API will be up and running, listening for requests.
 // This is basically a while(true) {...} loop that will run "forever"
 
