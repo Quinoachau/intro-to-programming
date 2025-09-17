@@ -1,6 +1,11 @@
 ﻿
 using Alba;
 using Links.Api.Links;
+using Marten;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace Links.Tests;
 public class AddingLinks
@@ -18,7 +23,15 @@ public class AddingLinks
         //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         // this will start up (host) my API for me in this test.
-        var host = await AlbaHost.For<Program>();
+        var host = await AlbaHost.For<Program>(config =>
+        {
+            //config.ConfigureTestServices(sp =>
+            //{
+            //    var fakeDocumentSession = Substitute.For<IDocumentSession>();
+            //    fakeDocumentSession.SaveChangesAsync().Throws(new OutOfMemoryException());
+            //    sp.AddScoped<IDocumentSession>(_ => fakeDocumentSession);
+            //});
+        });
         // Given I post this data to this API, then this should happen.
         // "Desliming"
         var linkToAdd = new CreateLinkRequest
@@ -26,7 +39,7 @@ public class AddingLinks
             Href = "https://microsoft.com",
             Description = "Where do you want to go today?"
         };
-        var postResponse = await host.Scenario(api =>
+       var postResponse = await host.Scenario(api =>
         {
             api.Post.Json(linkToAdd).ToUrl("/links");
             api.StatusCodeShouldBe(201); // Created.

@@ -1,6 +1,18 @@
-@Links.Api_HostAddress = http://localhost:5086
-
-GET {{Links.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
+@Links.Api_HostAddress = http://localhost:1337
+ 
+POST http://localhost:1337/links
+Content-Type: application/json
+Authorization: bearer SOME_VALUE_YOU_GET_FROM_ANOTHER_SERVICE
+ 
+{
+    "href": "https://www.hypertheory.com",
+    "description": "Best danged training available ANYWHERE!",
+    "title": "Hypertheory Training"
+}
+ 
+ 
 ###
+ 
+GET http://localhost:1337/links
+Accept: application/json
+ 

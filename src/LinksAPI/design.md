@@ -12,25 +12,54 @@ Content-Type: application/json
 Authorization: bearer 39378973973973
 
 {
-  "href": "https://allstate.com",
-  "description": "Good insurance. Great Developers"
+  "href": "https://hub.docker.com",
+  "description": "Docker Container Registry"
+}
+```
+
+
+```http
+201 Created
+Content-Type: application/json
+Location: /links/38983989839839839893
+
+{
+  "id": "38983989839839839893",
+  "href": "https://typescriptlang.org",
+  "description": "The TypeScript Website",
+  "addedBy": "jeff@hypertheory.com",
+  "created": "some datetime"
 }
 ```
 
 ```http
-GET http://localhost:1337/links/cc490c43-6ee0-4228-88e5-c6cf7843b8a1
+GET http://localhost:1337/links/b7523ca1-eccb-4920-983a-fb4708da8875
+```
+
+
+
+Here is some sample code:
+
+```typescript
+const name = 'Jeff';
+console.log(name.toUpper());
 ```
 
 Http Status Codes:
 
-200 - 299: This worked.
-    201: Created
 
-300 - 399: need more information or redirects
+200 - 299: This worked. 
+
+201 - Created
+
+300 - 399: Need more information or redirects.
 
 400 - 499: The user agent (the client making the request) did something wrong.
-    401: You need to be authenticated. We need to know who you are
-    403: I know who you are and you Specifically can't do that.
-    404: You asked for something we don't have.
 
-500 - 599: We screwed up.
+401 - You need to be authenticated. We gotta know who you are.
+403 - I Know who you are and you SPECIFICALLY can't do this.
+
+404 - 
+
+500 - 599: We screwed up. SHAME! 
+
