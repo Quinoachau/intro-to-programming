@@ -3,6 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 using Marten;
 using Microsoft.AspNetCore.Mvc;
+using Weasel.Postgresql.Tables;
 
 namespace Links.Api.Links;
 
@@ -12,41 +13,22 @@ namespace Links.Api.Links;
 [ApiController]
 public class LinksController(IDocumentSession session, IManagerUserIdentity userIdentityManager) : ControllerBase
 {
-
     // GET /links
-
     // GET /link?sortOrder=NewestFirst
-
     [HttpGet("/links")]
-
     public async Task<ActionResult> GetAllLinksAsync([FromQuery] string sortOrder = "OldestFirst")
-
     {
-
         var response = session.Query<CreateLinkResponse>();
 
         if (sortOrder == "NewestFirst")
-
         {
-
-            response.OrderByDescending(link => link.Created);
-
+            response = (Marten.Linq.IMartenQueryable<CreateLinkResponse>)response.OrderByDescending(link => link.Created);
         }
-        else
-
-        {
-
-            response.OrderBy(link => link.Created);
-
-        }
-        ;
 
         var results = await response.ToListAsync();
-
+        //await Task.Delay(3000);
         return Ok(results);
-
     }
-
 
     [HttpPost("/links")]
     public async Task<ActionResult> AddALink(
@@ -66,10 +48,9 @@ public class LinksController(IDocumentSession session, IManagerUserIdentity user
         };
         session.Store(response);
         await session.SaveChangesAsync();
+
         return Created($"/links/{response.Id}", response);
     }
-
-
 
     // If we get a GET request to /links/{guid} THEN create this controller and run this method, if isn't, don't bother me, just return 404
     [HttpGet("/links/{postId:guid}")]

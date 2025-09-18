@@ -5,11 +5,16 @@ Content-Type: application/json
 Authorization: bearer SOME_VALUE_YOU_GET_FROM_ANOTHER_SERVICE
  
 {
-    "href": "https://www.hypertheory.com",
-    "description": "Best danged training available ANYWHERE!",
-    "title": "Hypertheory Training"
+    "title": "Some Link",
+    "description": "Some Description",
+    "href": "https://blah.com"
 }
  
+ 
+###
+ 
+GET http://localhost:1337/links?sortOrder=NewestFirst
+Accept: application/json
  
 ###
  
