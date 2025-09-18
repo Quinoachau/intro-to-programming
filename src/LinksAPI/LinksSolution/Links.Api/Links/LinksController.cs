@@ -13,12 +13,40 @@ namespace Links.Api.Links;
 public class LinksController(IDocumentSession session, IManagerUserIdentity userIdentityManager) : ControllerBase
 {
 
+    // GET /links
+
+    // GET /link?sortOrder=NewestFirst
+
     [HttpGet("/links")]
-    public async Task<ActionResult> GetAllLinksAsync()
+
+    public async Task<ActionResult> GetAllLinksAsync([FromQuery] string sortOrder = "OldestFirst")
+
     {
-        var response = await session.Query<CreateLinkResponse>().ToListAsync();
-        return Ok(response);
+
+        var response = session.Query<CreateLinkResponse>();
+
+        if (sortOrder == "NewestFirst")
+
+        {
+
+            response.OrderByDescending(link => link.Created);
+
+        }
+        else
+
+        {
+
+            response.OrderBy(link => link.Created);
+
+        }
+        ;
+
+        var results = await response.ToListAsync();
+
+        return Ok(results);
+
     }
+
 
     [HttpPost("/links")]
     public async Task<ActionResult> AddALink(
@@ -40,6 +68,8 @@ public class LinksController(IDocumentSession session, IManagerUserIdentity user
         await session.SaveChangesAsync();
         return Created($"/links/{response.Id}", response);
     }
+
+
 
     // If we get a GET request to /links/{guid} THEN create this controller and run this method, if isn't, don't bother me, just return 404
     [HttpGet("/links/{postId:guid}")]

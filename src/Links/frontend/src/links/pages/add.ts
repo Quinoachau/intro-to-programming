@@ -78,6 +78,7 @@ export class Add {
           'Content-Type': 'application/json',
         },
       });
+      this.form.reset();
     } else {
       console.warn('The form is not valid - whatcha going to do?');
     }
