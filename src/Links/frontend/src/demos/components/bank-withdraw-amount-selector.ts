@@ -11,7 +11,7 @@ import { BankAccountStore } from '../../shared/services/bank-account-store';
       @for (amount of store.amounts; track $index) {
         <button
           [disabled]="store.amountLeft() - amount < 0"
-          (click)="store.addAmount(amount)"
+          (click)="store.addWithdrawalAmount(amount)"
           class="join-item btn btn-success"
         >
           {{ amount }}
